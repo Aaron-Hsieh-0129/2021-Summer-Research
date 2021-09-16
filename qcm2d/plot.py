@@ -1,0 +1,279 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import seaborn as sns
+import scipy.stats as stats
+import time
+
+def getData(file):
+	nx, nz = int(150000 / 250), int(15000 / 250) 
+	output = np.zeros([nx, nz])
+	for k in range(nz):
+		for i in range(nx):
+			output[i][k] = file.pop(0)
+
+	return output
+
+def getData2(file):
+	nx, nz = int(150000 / 250), int(15000 / 250) 
+	output = np.zeros([nx, nz])
+	for k in range(nz):
+		for i in range(nx):
+			output[i][k] = file.pop(0)
+			if output[i][k] < 0.:
+				output[i][k] = 0.;
+
+	return output
+
+
+dt = 0.1
+nx, nz = int(150000 / 250), int(15000 / 250)
+
+count = 1
+for t in range(0, 50001, 250):
+	th = np.loadtxt("outputs/th/th_" + str(t) + ".txt").reshape([nx, nz], order='F')
+	th_flip = th.swapaxes(0, 1)[:, 250:350+1]
+	plt.figure(figsize=(10, 6))
+	plt.tight_layout()
+	plt.title(f"t = {t * dt} s", fontsize=14)
+	plt.xlabel("x [km]")
+	plt.ylabel("z [km]")
+	plt.xticks(np.linspace(0, 100, 7), ["60", "65", "70", "75", "80", "85", "90"])
+	plt.yticks([0, 10, 20, 30, 40, 50, 59], ["0", "2.5", "5", "7.5", "10", "12.5", "15"])
+	CF = plt.contourf(th_flip, levels=np.arange(-16, 16+2,2), extend='both', cmap=cm.twilight_shifted)
+	cbar = plt.colorbar(pad=0.05)
+	cbar.set_ticks(np.arange(-16, 16+4, 4))
+	cbar.set_label(r"$\theta^{'}$ [K]")
+
+	X, Y = np.meshgrid(np.arange(101), np.arange(60))
+	u = np.loadtxt("outputs/u/u_" + str(t) + ".txt").reshape([nx, nz], order='F')
+	u_flip = u.swapaxes(0, 1)[:, 250:350+1]
+	w = np.loadtxt("outputs/w/w_" + str(t) + ".txt").reshape([nx, nz], order='F')
+	w_flip = w.swapaxes(0, 1)[:, 250:350+1]
+	Q = plt.quiver(X[::2, ::2], Y[::2, ::2], u_flip[::2, ::2], w_flip[::2, ::2], angles='xy', units="width", scale=300)
+	qk = plt.quiverkey(Q, 0.7, 0.9, 10, r'$10 \frac{m}{s}$', labelpos='E', coordinates='figure')
+
+	qc = np.loadtxt("outputs/qc/qc_" + str(t) + ".txt").reshape([nx, nz], order='F')
+	qc_flip = qc.swapaxes(0, 1)[:, 250:350+1] * 1000
+	CS = plt.contour(qc_flip, levels=[0.0001, 1, 2, 3], colors='yellow', linewidths=1.25)
+	plt.clabel(CS, inline=1, fontsize=8, fmt="%1.0f")
+
+	qr = np.loadtxt("outputs/qr/qr_" + str(t) + ".txt").reshape([nx, nz], order='F')
+	qr_flip = qr.swapaxes(0, 1)[:, 250:350+1]
+	x, z = [], []
+	for i in range(qr_flip.shape[0]):
+		for k in range(qr_flip.shape[1]):
+			if qr_flip[i][k] >= 0.001:
+				x.append(i)
+				z.append(k)
+
+	scatter = plt.scatter(z, x, c='deepskyblue', s=5, marker='|')
+
+	h1, _ = CS.legend_elements()
+	h2, _ = CF.legend_elements()
+
+	plt.legend([h1[0], scatter], [r"$q_c\quad[\frac{g}{kg}]$", r"$q_r\quad$"], loc='upper right')
+	plt.savefig(f"graphs/qc+qr+th+u+w/qc+qr+th+u+w_{count}.png", dpi=300)
+	plt.close()
+
+	############################# qr+th+u+w ##########################
+	# th = getData(np.loadtxt("outputs/th/th_" + str(t) + ".txt").tolist())
+	# th_flip = th.swapaxes(0, 1)[:, 250:350+1]
+	plt.figure(figsize=(10, 6))
+	plt.tight_layout()
+	plt.title(f"t = {t * dt} s", fontsize=14)
+	plt.xlabel("x [km]")
+	plt.ylabel("z [km]")
+	plt.xticks(np.linspace(0, 100, 7), ["60", "65", "70", "75", "80", "85", "90"])
+	plt.yticks([0, 10, 20, 30, 40, 50, 59], ["0", "2.5", "5", "7.5", "10", "12.5", "15"])
+	CF = plt.contourf(th_flip, levels=np.arange(-16, 16+2,2), extend='both', cmap=cm.twilight_shifted)
+	cbar = plt.colorbar(pad=0.05)
+	cbar.set_ticks(np.arange(-16, 16+4, 4))
+	cbar.set_label(r"$\theta^{'}$ [K]")
+
+	X, Y = np.meshgrid(np.arange(101), np.arange(60))
+	# u = getData(np.loadtxt("outputs/u/u_" + str(t) + ".txt").tolist())
+	# u_flip = u.swapaxes(0, 1)[:, 250:350+1]
+	# w = getData(np.loadtxt("outputs/w/w_" + str(t) + ".txt").tolist())
+	# w_flip = w.swapaxes(0, 1)[:, 250:350+1]
+	Q = plt.quiver(X[::2, ::2], Y[::2, ::2], u_flip[::2, ::2], w_flip[::2, ::2], angles='xy', units="width", scale=300)
+	qk = plt.quiverkey(Q, 0.7, 0.9, 10, r'$10 \frac{m}{s}$', labelpos='E', coordinates='figure')
+
+	# qr = getData2(np.loadtxt("outputs/qr/qr_" + str(t) + ".txt").tolist())
+	# qr_flip = qr.swapaxes(0, 1)[:, 250:350+1]
+	x, z = [], []
+	for i in range(qr_flip.shape[0]):
+		for k in range(qr_flip.shape[1]):
+			if qr_flip[i][k] >= 0.001:
+				x.append(i)
+				z.append(k)
+
+	scatter = plt.scatter(z, x, c='deepskyblue', s=5, marker='|')
+
+	h2, _ = CF.legend_elements()
+
+	plt.legend([scatter], [r"$q_r\quad$"], loc='upper right')
+	plt.savefig(f"graphs/qr+th+u+w/qr+th+u+w_{count}.png", dpi=300)
+	plt.close()
+
+	############################# th ##########################
+	# th = getData(np.loadtxt("outputs/th/th_" + str(t) + ".txt").tolist())
+	# th_flip = th.swapaxes(0, 1)[:, 250:350+1]
+	plt.figure(figsize=(10, 6))
+	plt.tight_layout()
+	plt.title(f"θ' [°C], t = {t * dt} s", fontsize=14)
+	plt.xlabel("x [km]")
+	plt.ylabel("z [km]")
+	plt.xticks(np.linspace(0, 100, 7), ["60", "65", "70", "75", "80", "85", "90"])
+	plt.yticks([0, 10, 20, 30, 40, 50, 59], ["0", "2.5", "5", "7.5", "10", "12.5", "15"])
+	plt.contourf(th_flip, levels=np.arange(-16, 16+2,2), extend='both', cmap=cm.twilight_shifted)
+	cbar = plt.colorbar(pad=0.05)
+	cbar.set_ticks(np.arange(-16, 16+2,2))
+	plt.savefig(f"graphs/th/th_{count}.png", dpi=300)
+	plt.close()
+
+	############################# zeta ##########################
+	pi = np.loadtxt("outputs/pi/pi_" + str(t) + ".txt").reshape([nx, nz], order='F')
+	pi_flip = pi.swapaxes(0, 1)[:, 250:350+1]
+	plt.figure(figsize=(10, 6))
+	plt.tight_layout()
+	plt.title(r"$\pi^{'}$" f",  t = {t * dt} s", fontsize=14)
+	plt.xlabel("x [km]")
+	plt.ylabel("z [km]")
+	plt.xticks(np.linspace(0, 100, 7), ["60", "65", "70", "75", "80", "85", "90"])
+	plt.yticks([0, 10, 20, 30, 40, 50, 59], ["0", "2.5", "5", "7.5", "10", "12.5", "15"])
+	plt.contourf(pi_flip, levels=np.linspace(-0.004, 0.004, 11), extend='both', cmap=cm.twilight_shifted)
+	cbar = plt.colorbar(pad=0.05)
+	cbar.set_ticks(np.linspace(-0.004, 0.004, 11))
+	plt.savefig(f"graphs/pi/pi_{count}.png", dpi=300)
+	plt.close()
+
+
+
+	############################# u ##########################
+	# u = getData(np.loadtxt("outputs/u/u_" + str(t) + ".txt").tolist())
+	# u_flip = u.swapaxes(0, 1)[:, 250:350+1]
+	plt.figure(figsize=(10, 6))
+	plt.tight_layout()
+	plt.title(r"u $[\frac{m}{s}]$" f",  t = {t * dt} s", fontsize=14)
+	plt.xlabel("x [km]")
+	plt.ylabel("z [km]")
+	plt.xticks(np.linspace(0, 100, 7), ["60", "65", "70", "75", "80", "85", "90"])
+	plt.yticks([0, 10, 20, 30, 40, 50, 59], ["0", "2.5", "5", "7.5", "10", "12.5", "15"])
+	plt.contourf(u_flip, levels=np.arange(-36, 36+4, 4), extend='both', cmap=cm.twilight_shifted)
+	cbar = plt.colorbar(pad=0.05)
+	cbar.set_ticks(np.arange(-36, 36+4, 4))
+	plt.savefig(f"graphs/u/u_{count}.png", dpi=300)
+	plt.close()
+
+
+	############################# w ##########################
+	# w = getData(np.loadtxt("outputs/w/w_" + str(t) + ".txt").tolist())
+	# w_flip = w.swapaxes(0, 1)[:, 250:350+1]
+	plt.figure(figsize=(10, 6))
+	plt.tight_layout()
+	plt.title(r"w $[\frac{m}{s}]$" f",  t = {t * dt} s", fontsize=14)
+	plt.xlabel("x [km]")
+	plt.ylabel("z [km]")
+	plt.xticks([0, 100, 200, 300, 400, 500, 599], ["0", "25", "50", "75", "100", "125", "150"])
+	plt.yticks([0, 10, 20, 30, 40, 50, 59], ["0", "2.5", "5", "7.5", "10", "12.5", "15"])
+	plt.contourf(w_flip, levels=np.arange(-36, 36+4, 4), extend='both', cmap=cm.twilight_shifted)
+	cbar = plt.colorbar(pad=0.05)
+	cbar.set_ticks(np.arange(-36, 36+4, 4))
+	plt.savefig(f"graphs/w/w_{count}.png", dpi=300)
+	plt.close()
+
+
+	############################# qv ##########################
+	qv = np.loadtxt("outputs/qv/qv_" + str(t) + ".txt").reshape([nx, nz], order='F')
+	qv_flip = qv.swapaxes(0, 1)[:, 250:350+1]
+	plt.figure(figsize=(10, 6))
+	plt.tight_layout()
+	plt.title(r"$q_v$ $[\frac{kg}{kg}]$" + f",  t = {t * dt} s", fontsize=14)
+	plt.xlabel("x [km]")
+	plt.ylabel("z [km]")
+	plt.xticks(np.linspace(0, 100, 7), ["60", "65", "70", "75", "80", "85", "90"])
+	plt.yticks([0, 10, 20, 30, 40, 50, 59], ["0", "2.5", "5", "7.5", "10", "12.5", "15"])
+	plt.contourf(qv_flip, extend='max', levels=np.linspace(0, 0.014, 7))
+	cbar = plt.colorbar(pad=0.05)
+	cbar.set_ticks(np.linspace(0, 0.014, 7))
+	plt.savefig(f"graphs/qv/qv_{count}.png", dpi=300)
+	plt.close()
+
+	############################# qc ##########################
+	# qc = getData2(np.loadtxt("outputs/qc/qc_" + str(t) + ".txt").tolist())
+	# qc_flip = qc.swapaxes(0, 1)[:, 250:350+1]
+	plt.figure(figsize=(10, 6))
+	plt.tight_layout()
+	plt.title(r"$q_c$ $[\frac{kg}{kg}]$" + f",  t = {t * dt} s", fontsize=14)
+	plt.xlabel("x [km]")
+	plt.ylabel("z [km]")
+	plt.xticks(np.linspace(0, 100, 7), ["60", "65", "70", "75", "80", "85", "90"])
+	plt.yticks([0, 10, 20, 30, 40, 50, 59], ["0", "2.5", "5", "7.5", "10", "12.5", "15"])
+	plt.contourf(qc_flip, extend='max', levels=np.linspace(0, 0.006, 7))
+	cbar = plt.colorbar(pad=0.05)
+	cbar.set_ticks(np.linspace(0, 0.006, 7))
+	plt.savefig(f"graphs/qc/qc_{count}.png", dpi=300)
+	plt.close()
+
+	############################# qr ##########################
+	# qr = getData2(np.loadtxt("outputs/qr/qr_" + str(t) + ".txt").tolist())
+	# qr_flip = qr.swapaxes(0, 1)[:, 250:350+1]
+	plt.figure(figsize=(10, 6))
+	plt.tight_layout()
+	plt.title(r"$q_r$ $[\frac{kg}{kg}]$" + f",  t = {t * dt} s", fontsize=14)
+	plt.xlabel("x [km]")
+	plt.ylabel("z [km]")
+	plt.xticks(np.linspace(0, 100, 7), ["60", "65", "70", "75", "80", "85", "90"])
+	plt.yticks([0, 10, 20, 30, 40, 50, 59], ["0", "2.5", "5", "7.5", "10", "12.5", "15"])
+	plt.contourf(qr_flip, extend='max', levels=np.linspace(0, 0.04, 9))
+	cbar = plt.colorbar(pad=0.05)
+	cbar.set_ticks(np.linspace(0, 0.04, 9))
+	plt.savefig(f"graphs/qr/qr_{count}.png", dpi=300)
+	plt.close()
+
+	############################# qc+qr ##########################
+	# qr = getData2(np.loadtxt("outputs/qr/qr_" + str(t) + ".txt").tolist())
+	# qr_flip = qr.swapaxes(0, 1)[:, 250:350+1]
+	plt.figure(figsize=(10, 6))
+	plt.tight_layout()
+	plt.title(r"$q_r$ $[\frac{kg}{kg}]$" + r" & $q_{c}$ $[\frac{kg}{kg}]$" + f",  t = {t * dt} s", fontsize=14)
+	plt.xlabel("x [km]")
+	plt.ylabel("z [km]")
+	plt.xticks(np.linspace(0, 100, 7), ["60", "65", "70", "75", "80", "85", "90"])
+	plt.yticks([0, 10, 20, 30, 40, 50, 59], ["0", "2.5", "5", "7.5", "10", "12.5", "15"])
+	plt.contourf(qr_flip, extend='max', levels=np.linspace(0, 0.04, 9))
+	cbar = plt.colorbar(pad=0.05)
+	cbar.set_ticks(np.linspace(0, 0.04, 9))
+
+	# qc = getData2(np.loadtxt("outputs/qc/qc_" + str(t) + ".txt").tolist())
+	# qc_flip = qc.swapaxes(0, 1)[:, 250:350+1]
+	CS = plt.contour(qc_flip, extend='max', levels=np.linspace(0, 0.003, 4), colors='red', linewidths=1.25)
+	plt.clabel(CS, inline=1, fontsize=8, fmt="%.4f")
+	plt.savefig(f"graphs/qc+qr/qc+qr_{count}.png", dpi=300)
+	plt.close()
+
+	############################# qv+qc ##########################
+	# qv = getData(np.loadtxt("outputs/qv/qv_" + str(t) + ".txt").tolist())
+	# qv_flip = qv.swapaxes(0, 1)[:, 250:350+1]
+	plt.figure(figsize=(10, 6))
+	plt.tight_layout()
+	plt.title(r"$q_v$ $[\frac{kg}{kg}]$" + r" & $q_{c}$ $[\frac{kg}{kg}]$" + f",  t = {t * dt} s", fontsize=14)
+	plt.xlabel("x [km]")
+	plt.ylabel("z [km]")
+	plt.xticks(np.linspace(0, 100, 7), ["60", "65", "70", "75", "80", "85", "90"])
+	plt.yticks([0, 10, 20, 30, 40, 50, 59], ["0", "2.5", "5", "7.5", "10", "12.5", "15"])
+	plt.contourf(qv_flip, extend='max', levels=np.linspace(0, 0.014, 7))
+	cbar = plt.colorbar(pad=0.05)
+	cbar.set_ticks(np.linspace(0, 0.014, 7))
+
+	# qc = getData2(np.loadtxt("outputs/qc/qc_" + str(t) + ".txt").tolist())
+	# qc_flip = qc.swapaxes(0, 1)[:, 250:350+1]
+	CS = plt.contour(qc_flip, extend='max', levels=np.linspace(0, 0.003, 4), colors='red', linewidths=1.25)
+	plt.clabel(CS, inline=1, fontsize=8, fmt="%.4f")
+	plt.savefig(f"graphs/qv+qc/qv+qc_{count}.png", dpi=300)
+	plt.close()
+
+
+	count += 1
+	print(t)
