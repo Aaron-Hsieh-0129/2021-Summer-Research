@@ -18,7 +18,7 @@
 #define rdz2 (1. / ((double) dz * dz))
 #define d2t (2. * dt)
 #define TIMEEND (2001.)
-#define WRITEFILESTEP (250)
+#define OUTPUTSTEP (250)
 #define Kx (1000.)
 #define Kz (1000.)
 #define TIMETS (0.01)
