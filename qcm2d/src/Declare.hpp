@@ -2,8 +2,6 @@
 #include <cmath>
 #include "Const.h"
 
-using namespace std;
-
 class Array {
 	public:
 			// constructor

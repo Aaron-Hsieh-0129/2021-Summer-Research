@@ -1,4 +1,4 @@
-#include "Init.h"
+#include "Init.hpp"
 
 void Init::Init1d(Array & myArray) {
 	// init tb

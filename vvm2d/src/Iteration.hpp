@@ -1,8 +1,6 @@
 #include "Outputfile.hpp"
 #include <Eigen/Sparse>
 
-using namespace std;
-
 typedef Eigen::Triplet<double> T;
 class Iteration {
 	public:

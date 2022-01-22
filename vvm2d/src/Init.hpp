@@ -3,8 +3,6 @@
 #include "Const.hpp"
 #include "Declare.hpp"
 
-using namespace std;
-
 class Init {
 	public:
 			static void Init1d(Array &);

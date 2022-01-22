@@ -3,8 +3,6 @@
 #include "Const.h"
 #include "Declare.h"
 
-using namespace std;
-
 class Init {
 	public:
 			static void Init1d(Array &);

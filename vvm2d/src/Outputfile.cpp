@@ -2,29 +2,29 @@
 
 void Output::printInit(Array & myArray) {
 	double z;
-	cout << "z          tb        rhou       rhow       qvb	 RH      pib" << endl;
+	std::cout << "z          tb        rhou       rhow       qvb	 RH      pib" << std::endl;
 	for (int k = 0; k <= nz-1;k++){
 		z = (double) (k - 0.5) * dz ;
-		cout << fixed << setprecision(2) << z << "    " << myArray.tb[k] << "    " << myArray.rhou[k] << "     " 
+		std::cout << std::fixed << std::setprecision(2) << z << "    " << myArray.tb[k] << "    " << myArray.rhou[k] << "     " 
 		<< myArray.rhow[k] << "   	 " << myArray.qvb[k] * 1000 << "    " << myArray.qvb[k] / myArray.qvsb[k] << "    "
-		<< myArray.pib[k] << endl;
+		<< myArray.pib[k] << std::endl;
 	}
-	fstream initout;
-	string initName = "../outputs/init.txt";
-	initout.open(initName, ios::out);
+	std::fstream initout;
+	std::string initName = "../outputs/init.txt";
+	initout.open(initName, std::ios::out);
 	for (int k = 0; k <= nz-1; k++) {
 		z = (double) (k - 0.5) * dz ;
 		initout << z << "    " << myArray.tb[k] << "    " << myArray.rhou[k] << "     " 
 		<< myArray.rhow[k] << "   	 " << myArray.qvb[k] << "    " << myArray.qvsb[k] << "    " << myArray.qvb[k] / myArray.qvsb[k] << "    "
-		<< myArray.pib[k] << endl;
+		<< myArray.pib[k] << std::endl;
 	}
 	return;
 }
 
 void Output::output_zeta(int n, Array & myArray) {
-	fstream foutzeta;
-	string zetaName = "../outputs/zeta/zeta_" + to_string(n) + ".txt";
-	foutzeta.open(zetaName, ios::out);
+	std::fstream foutzeta;
+	std::string zetaName = "../outputs/zeta/zeta_" + std::to_string(n) + ".txt";
+	foutzeta.open(zetaName, std::ios::out);
 	for (int k = 0; k < nz; k++) {
 		for (int i = 0; i < nx; i++) {
 			foutzeta << myArray.zeta[i][k] << " ";
@@ -33,9 +33,9 @@ void Output::output_zeta(int n, Array & myArray) {
 }
 
 void Output::output_th(int n, Array & myArray) {
-	fstream foutth;
-	string thName = "../outputs/th/th_" + to_string(n) + ".txt";
-	foutth.open(thName, ios::out);
+	std::fstream foutth;
+	std::string thName = "../outputs/th/th_" + std::to_string(n) + ".txt";
+	foutth.open(thName, std::ios::out);
 	for (int k = 0; k < nz; k++) {
 		for (int i = 0; i < nx; i++) {
 			foutth << myArray.th[i][k] << " ";
@@ -44,9 +44,9 @@ void Output::output_th(int n, Array & myArray) {
 }
 
 void Output::output_u(int n, Array & myArray) {
-	fstream foutu;
-	string uName = "../outputs/u/u_" + to_string(n) + ".txt";
-	foutu.open(uName, ios::out);
+	std::fstream foutu;
+	std::string uName = "../outputs/u/u_" + std::to_string(n) + ".txt";
+	foutu.open(uName, std::ios::out);
 	for (int k = 0; k < nz; k++) {
 		for (int i = 0; i < nx; i++) {
 			foutu << myArray.u[i][k] << " ";
@@ -55,9 +55,9 @@ void Output::output_u(int n, Array & myArray) {
 }
 
 void Output::output_w(int n, Array & myArray) {
-	fstream foutw;
-	string wName = "../outputs/w/w_" + to_string(n) + ".txt";
-	foutw.open(wName, ios::out);
+	std::fstream foutw;
+	std::string wName = "../outputs/w/w_" + std::to_string(n) + ".txt";
+	foutw.open(wName, std::ios::out);
 	for (int k = 0; k < nz; k++) {
 		for (int i = 0; i < nx; i++) {
 			foutw << myArray.w[i][k] << " ";
@@ -66,9 +66,9 @@ void Output::output_w(int n, Array & myArray) {
 }
 
 void Output::output_qv(int n, Array & myArray) {
-	fstream foutqv;
-	string qvName = "../outputs/qv/qv_" + to_string(n) + ".txt";
-	foutqv.open(qvName, ios::out);
+	std::fstream foutqv;
+	std::string qvName = "../outputs/qv/qv_" + std::to_string(n) + ".txt";
+	foutqv.open(qvName, std::ios::out);
 	for (int k = 0; k < nz; k++) {
 		for (int i = 0; i < nx; i++) {
 			foutqv << myArray.qv[i][k] + myArray.qvb[k] << " ";
@@ -77,9 +77,9 @@ void Output::output_qv(int n, Array & myArray) {
 }
 
 void Output::output_qc(int n, Array & myArray) {
-	fstream foutqc;
-	string qcName = "../outputs/qc/qc_" + to_string(n) + ".txt";
-	foutqc.open(qcName, ios::out);
+	std::fstream foutqc;
+	std::string qcName = "../outputs/qc/qc_" + std::to_string(n) + ".txt";
+	foutqc.open(qcName, std::ios::out);
 	for (int k = 0; k < nz; k++) {
 		for (int i = 0; i < nx; i++) {
 			foutqc << myArray.qc[i][k] << " ";
@@ -88,9 +88,9 @@ void Output::output_qc(int n, Array & myArray) {
 }
 
 void Output::output_qr(int n, Array & myArray) {
-	fstream foutqr;
-	string qrName = "../outputs/qr/qr_" + to_string(n) + ".txt";
-	foutqr.open(qrName, ios::out);
+	std::fstream foutqr;
+	std::string qrName = "../outputs/qr/qr_" + std::to_string(n) + ".txt";
+	foutqr.open(qrName, std::ios::out);
 	for (int k = 0; k < nz; k++) {
 		for (int i = 0; i < nx; i++) {
 			foutqr << myArray.qr[i][k] << " ";

@@ -110,7 +110,7 @@ void Iteration::cal_w(Array& myArray) {
 		int k = 1;
 		Eigen::VectorXd x((NX-2)*(NZ-3)), b((NX-2)*(NZ-3));
 		Eigen::SparseMatrix<double> A((NX-2)*(NZ-3), (NX-2)*(NZ-3));
-		vector<T> coeff;
+		std::vector<T> coeff;
 		for (int idx = 1; idx < (NX-2)*(NZ-3); idx++) {
 			// Height
 			if (idx % (NX-2) == 1) k++;
@@ -181,10 +181,10 @@ void Iteration::cal_u(Array& myArray) {
 	#else
 		const double ubar = 0.;
 		// G
-		int NX = nx, NZ = nz;
+		int NX = nx;
 		Eigen::VectorXd y(NX-2), h(NX-2);
 		Eigen::SparseMatrix<double> G(NX-2, NX-2);
-		vector<T> coeff_xi;
+		std::vector<T> coeff_xi;
 
 		for (int k = 1; k < NX-2; k++) {
 			// D
@@ -386,10 +386,10 @@ void Iteration::condensation(Array & myArray, int i, int k) {
 // autoconversion of qc to qr
 void Iteration::autoconversion(Array & myArray, int i, int k) {
 	double autort = 0.001, autotr = 0.001; // autocon rate [1/sec], autocon threshold [kg/kg]
-	double qcplus = max(0., myArray.qcp[i][k]);
+	double qcplus = std::max(0., myArray.qcp[i][k]);
 	double ar = autort * (qcplus - autotr);
-	ar = max(0., ar);
-	double arcrdt = min(ar * d2t, qcplus);
+	ar = std::max(0., ar);
+	double arcrdt = std::min(ar * d2t, qcplus);
 	myArray.qcp[i][k] = myArray.qcp[i][k] - arcrdt;
 	myArray.qrp[i][k] = myArray.qrp[i][k] + arcrdt;
 	return;
@@ -398,11 +398,11 @@ void Iteration::autoconversion(Array & myArray, int i, int k) {
 // accretion of qc by qr
 void Iteration::accretion(Array & myArray, int i, int k) {
 	double accrrt = 2.2; // accretion rate [1/sec]
-	double qcplus = max(0., myArray.qcp[i][k]);
-	double qrplus = max(0., myArray.qrp[i][k]);
+	double qcplus = std::max(0., myArray.qcp[i][k]);
+	double qrplus = std::max(0., myArray.qrp[i][k]);
 
 	double cr = myArray.rhou[k] * accrrt * qcplus * pow(qrplus, 0.875);
-	double arcrdt = min(cr * d2t, qcplus);
+	double arcrdt = std::min(cr * d2t, qcplus);
 
 	myArray.qcp[i][k] = myArray.qcp[i][k] - arcrdt;
 	myArray.qrp[i][k] = myArray.qrp[i][k] + arcrdt;
@@ -411,19 +411,19 @@ void Iteration::accretion(Array & myArray, int i, int k) {
 
 // evaporation of rain water
 void Iteration::evaporation(Array & myArray, int i, int k) {
-	double qrplus = max(0., myArray.qrp[i][k]);
-	double qvplus = max(0., myArray.qvp[i][k] + myArray.qvb[k]);
+	double qrplus = std::max(0., myArray.qrp[i][k]);
+	double qvplus = std::max(0., myArray.qvp[i][k] + myArray.qvb[k]);
 
 	double pc = 380. / (pow(myArray.pib[k], C_p / Rd) * P0);	 // coefficient
 	double pth = myArray.thp[i][k] + myArray.tb[k];
 	double qvs = pc * exp(17.27 * (myArray.pib[k] * pth - 273.) / (myArray.pib[k] * pth - 36.));	// Tetens equation
 
 	double coef = 1.6 + 30.39 * pow((myArray.rhou[k] * qrplus), 0.2046);	// ventilation coef.
-	double deficit = max((1. - qvplus / qvs), 0.);							// saturation dificit (RH < 100%)
+	double deficit = std::max((1. - qvplus / qvs), 0.);							// saturation dificit (RH < 100%)
 
 	double er = coef * deficit * (pow(myArray.rhou[k] * qrplus, 0.525)) / 
 				((2.03e4 + 9.584e6 / (myArray.pb[k] * qvs)) * myArray.rhou[k]);
-	double erdt = min(qrplus, max(0., er * d2t));
+	double erdt = std::min(qrplus, std::max(0., er * d2t));
 
 	myArray.qrp[i][k] = myArray.qrp[i][k] - erdt;
 	myArray.qvp[i][k] = myArray.qvp[i][k] + erdt;
@@ -435,9 +435,9 @@ void Iteration::heatflux(Array & myArray, int i, int k, int ishflux) {
 	if (ishflux == 1 && k == 1) {
 		double cdh = 7e-3;
 		double tground = 303.;
-		double tdif = max(tground - (myArray.thm[i][k] + myArray.tb[k]), 0.);
+		double tdif = std::max(tground - (myArray.thm[i][k] + myArray.tb[k]), 0.);
 		double avgu = 0.5 * abs(myArray.u[i+1][k] + myArray.u[i][k]);
-		avgu = max(avgu, 2.);
+		avgu = std::max(avgu, 2.);
 		double wnetc = 2. * sqrt(tdif);      // "convective velocity" adjustment
 		double vel = sqrt(pow(avgu, 2) + pow(wnetc, 2));
 		myArray.thp[i][k] = myArray.thp[i][k] + d2t * cdh * vel * myArray.addflx[i] * tdif * rdz;
@@ -450,7 +450,7 @@ void Iteration::LeapFrog(Array & myArray) {
 	double temp = TIMEEND / dt;
 	int nmax = (int) temp;
 	while (n < nmax) {
-		cout << n << endl;
+		std::cout << n << std::endl;
 		// output
 		if (n % OUTPUTSTEP == 0) {
 			Output::output_zeta(n, myArray);

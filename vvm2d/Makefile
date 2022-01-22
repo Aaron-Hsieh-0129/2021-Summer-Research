@@ -7,8 +7,8 @@ OPTFLAGS = -O3
 all	: bin/vvm2d
 	@echo -n ""
 
-bin/vvm2d	: main.o Declare.o Init.o Iteration.o Outputfile.o
-			$(CC) $(OPTFLAGS) main.o Declare.o Init.o Outputfile.o Iteration.o -I /usr/local/include/matplotlib-cpp-master/ -I /Users/wei/miniconda3/lib/python3.8/ -I /Users/wei/miniconda3/lib/python3.8/site-packages/numpy/core/include/ -L /usr/local/Frameworks/Python.framework/Versions/3.9/lib -lpython3.9 -o bin/vvm2d
+bin/vvm2d	: main.o Declare.o Init.o Iteration.o Outputfile.o Plot.o
+			$(CC) $(OPTFLAGS) main.o Declare.o Init.o Outputfile.o Iteration.o Plot.o -I /usr/local/include/matplotlib-cpp-master/ -I /Users/wei/miniconda3/lib/python3.8/ -I /Users/wei/miniconda3/lib/python3.8/site-packages/numpy/core/include/ -L /usr/local/Frameworks/Python.framework/Versions/3.9/lib -lpython3.9 -o bin/vvm2d
 main.o 	   	: src/main.cpp
 			$(CC) $(CFLAGS) $(OPTFLAGS) $< -o $@
 Declare.o	: src/Declare.cpp
@@ -16,6 +16,8 @@ Declare.o	: src/Declare.cpp
 Init.o		: src/Init.cpp
 			$(CC) $(CFLAGS) $(OPTFLAGS) $< -o $@
 Outputfile.o: src/Outputfile.cpp
+			$(CC) $(CFLAGS) $(OPTFLAGS) $< -o $@
+Plot.o		: src/Plot.cpp
 			$(CC) $(CFLAGS) $(OPTFLAGS) $< -o $@
 Iteration.o	: src/Iteration.cpp
 			$(CC) $(CFLAGS) $(OPTFLAGS) $< -o $@
