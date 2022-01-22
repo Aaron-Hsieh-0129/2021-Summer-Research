@@ -1,4 +1,4 @@
-#include "Outputfile.h"
+#include "Outputfile.hpp"
 
 void Output::printInit(Array & myArray) {
 	double z;

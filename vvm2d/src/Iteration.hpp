@@ -1,4 +1,4 @@
-#include "Outputfile.h"
+#include "Outputfile.hpp"
 #include <Eigen/Sparse>
 
 using namespace std;

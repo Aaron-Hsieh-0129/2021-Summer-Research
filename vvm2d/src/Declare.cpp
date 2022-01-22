@@ -1,4 +1,4 @@
-#include "Declare.h"
+#include "Declare.hpp"
 
 Array::Array() {
 	for (int k = 0; k <= nz-1; k++) {

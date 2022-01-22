@@ -1,4 +1,4 @@
-#include "Iteration.h"
+#include "Iteration.hpp"
 
 void Iteration::pzeta_pt(Array& myArray) {
 	double puzeta_px = 0., pwzeta_pz = 0., g_tb_pth_px = 0.;
@@ -452,7 +452,7 @@ void Iteration::LeapFrog(Array & myArray) {
 	while (n < nmax) {
 		cout << n << endl;
 		// output
-		if (n % WRITEFILESTEP == 0) {
+		if (n % OUTPUTSTEP == 0) {
 			Output::output_zeta(n, myArray);
 			Output::output_th(n, myArray);
 			Output::output_u(n, myArray);

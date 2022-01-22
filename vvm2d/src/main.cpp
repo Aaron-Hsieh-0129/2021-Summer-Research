@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Iteration.h"
+#include "Iteration.hpp"
 
 Array myArray;
 

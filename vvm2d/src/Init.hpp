@@ -1,7 +1,7 @@
 #include <iostream>
 #include <random>
-#include "Const.h"
-#include "Declare.h"
+#include "Const.hpp"
+#include "Declare.hpp"
 
 using namespace std;
 

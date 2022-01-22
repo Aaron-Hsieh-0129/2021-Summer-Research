@@ -8,7 +8,7 @@ all	: bin/vvm2d
 	@echo -n ""
 
 bin/vvm2d	: main.o Declare.o Init.o Iteration.o Outputfile.o
-			$(CC) $(OPTFLAGS) main.o Declare.o Init.o Outputfile.o Iteration.o -I /Users/wei/Downloads/matplotlib-cpp-master/ -I /Users/wei/miniconda3/lib/python3.8/ -I /Users/wei/miniconda3/lib/python3.8/site-packages/numpy/core/include/ -L /usr/local/Frameworks/Python.framework/Versions/3.9/lib -lpython3.9 -o bin/vvm2d
+			$(CC) $(OPTFLAGS) main.o Declare.o Init.o Outputfile.o Iteration.o -I /usr/local/include/matplotlib-cpp-master/ -I /Users/wei/miniconda3/lib/python3.8/ -I /Users/wei/miniconda3/lib/python3.8/site-packages/numpy/core/include/ -L /usr/local/Frameworks/Python.framework/Versions/3.9/lib -lpython3.9 -o bin/vvm2d
 main.o 	   	: src/main.cpp
 			$(CC) $(CFLAGS) $(OPTFLAGS) $< -o $@
 Declare.o	: src/Declare.cpp

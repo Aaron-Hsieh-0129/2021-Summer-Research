@@ -1,6 +1,6 @@
 #include <fstream>
 #include <iomanip>
-#include "Init.h"
+#include "Init.hpp"
 
 class Output {
 	public:
