@@ -1,6 +1,6 @@
 #include "Declare.hpp"
 
-Array::Array() {
+vvmArray::Array() {
 	for (int k = 0; k <= nz-1; k++) {
 		for (int i = 0; i <= nx-1; i++){
 			zetap[i][k] = zeta[i][k] = zetam[i][k] = 0.;
@@ -29,7 +29,7 @@ Array::Array() {
 	}
 }
 
-void Array::BoundaryProcess(double tmp[][nz]) {
+void vvmArray::BoundaryProcess(double tmp[][nz]) {
 	for (int k = 1; k <= nz-2; k++) {
 		tmp[0][k] = tmp[nx-2][k];
 		tmp[nx-1][k] = tmp[1][k];
@@ -40,7 +40,7 @@ void Array::BoundaryProcess(double tmp[][nz]) {
 	}
 }
 
-void Array::BoundaryProcessZETA(double tmp[][nz]) {
+void vvmArray::BoundaryProcessZETA(double tmp[][nz]) {
 	for (int k = 1; k <= nz-2; k++) {
 		tmp[0][k] = tmp[nx-2][k];
 		tmp[nx-1][k] = tmp[1][k];
@@ -51,7 +51,7 @@ void Array::BoundaryProcessZETA(double tmp[][nz]) {
 	}
 }
 
-void Array::BoundaryProcessDouble(double tmp[][nz]) {
+void vvmArray::BoundaryProcessDouble(double tmp[][nz]) {
 	for (int k = 1; k <= nz-2; k++) {
 		tmp[0][k] = tmp[nx-2][k];
 		tmp[nx-1][k] = tmp[1][k];

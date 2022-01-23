@@ -1,4 +1,5 @@
-#define g (9.80665)
+#define WORKDIRECTORY "/Users/wei/2021-Summer-Research/vvm2d/src/"
+#define gravity (9.80665)
 #define C_p (1003.5)
 #define Rd (287.)
 #define Cv (C_p - Rd)

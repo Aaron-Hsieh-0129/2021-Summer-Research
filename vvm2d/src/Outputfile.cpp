@@ -1,6 +1,6 @@
 #include "Outputfile.hpp"
 
-void Output::printInit(Array & myArray) {
+void Output::printInit(vvmArray & myArray) {
 	double z;
 	std::cout << "z          tb        rhou       rhow       qvb	 RH      pib" << std::endl;
 	for (int k = 0; k <= nz-1;k++){
@@ -21,7 +21,7 @@ void Output::printInit(Array & myArray) {
 	return;
 }
 
-void Output::output_zeta(int n, Array & myArray) {
+void Output::output_zeta(int n, vvmArray & myArray) {
 	std::fstream foutzeta;
 	std::string zetaName = "../outputs/zeta/zeta_" + std::to_string(n) + ".txt";
 	foutzeta.open(zetaName, std::ios::out);
@@ -32,7 +32,7 @@ void Output::output_zeta(int n, Array & myArray) {
 	}
 }
 
-void Output::output_th(int n, Array & myArray) {
+void Output::output_th(int n, vvmArray & myArray) {
 	std::fstream foutth;
 	std::string thName = "../outputs/th/th_" + std::to_string(n) + ".txt";
 	foutth.open(thName, std::ios::out);
@@ -43,7 +43,7 @@ void Output::output_th(int n, Array & myArray) {
 	}
 }
 
-void Output::output_u(int n, Array & myArray) {
+void Output::output_u(int n, vvmArray & myArray) {
 	std::fstream foutu;
 	std::string uName = "../outputs/u/u_" + std::to_string(n) + ".txt";
 	foutu.open(uName, std::ios::out);
@@ -54,7 +54,7 @@ void Output::output_u(int n, Array & myArray) {
 	}
 }
 
-void Output::output_w(int n, Array & myArray) {
+void Output::output_w(int n, vvmArray & myArray) {
 	std::fstream foutw;
 	std::string wName = "../outputs/w/w_" + std::to_string(n) + ".txt";
 	foutw.open(wName, std::ios::out);
@@ -65,7 +65,7 @@ void Output::output_w(int n, Array & myArray) {
 	}
 }
 
-void Output::output_qv(int n, Array & myArray) {
+void Output::output_qv(int n, vvmArray & myArray) {
 	std::fstream foutqv;
 	std::string qvName = "../outputs/qv/qv_" + std::to_string(n) + ".txt";
 	foutqv.open(qvName, std::ios::out);
@@ -76,7 +76,7 @@ void Output::output_qv(int n, Array & myArray) {
 	}
 }
 
-void Output::output_qc(int n, Array & myArray) {
+void Output::output_qc(int n, vvmArray & myArray) {
 	std::fstream foutqc;
 	std::string qcName = "../outputs/qc/qc_" + std::to_string(n) + ".txt";
 	foutqc.open(qcName, std::ios::out);
@@ -87,7 +87,7 @@ void Output::output_qc(int n, Array & myArray) {
 	}
 }
 
-void Output::output_qr(int n, Array & myArray) {
+void Output::output_qr(int n, vvmArray & myArray) {
 	std::fstream foutqr;
 	std::string qrName = "../outputs/qr/qr_" + std::to_string(n) + ".txt";
 	foutqr.open(qrName, std::ios::out);

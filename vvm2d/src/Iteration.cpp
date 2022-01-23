@@ -1,6 +1,6 @@
 #include "Iteration.hpp"
 
-void Iteration::pzeta_pt(Array& myArray) {
+void Iteration::pzeta_pt(vvmArray& myArray) {
 	double puzeta_px = 0., pwzeta_pz = 0., g_tb_pth_px = 0.;
 	for (int i = 1; i <= nx-2; i++) {
 		for (int k = 1; k <= nz-2; k++) {
@@ -17,14 +17,14 @@ void Iteration::pzeta_pt(Array& myArray) {
 			#elif defined(NoBouyance)
 				g_tb_pth_px = 0.;
 			#else
-				g_tb_pth_px = g / myArray.tb_zeta[k] * (0.5*(myArray.th[i][k] + myArray.th[i][k-1]) - 0.5*(myArray.th[i-1][k] + myArray.th[i-1][k-1])) * rdx;
+				g_tb_pth_px = gravity / myArray.tb_zeta[k] * (0.5*(myArray.th[i][k] + myArray.th[i][k-1]) - 0.5*(myArray.th[i-1][k] + myArray.th[i-1][k-1])) * rdx;
 			#endif
 
 			// Add water 
 			#if defined(WATER)
-				double g_pqv_px = g * (0.5*(myArray.qv[i][k] + myArray.qv[i][k-1]) - 0.5*(myArray.qv[i-1][k] + myArray.qv[i-1][k-1])) * rdx;
-				double gpqc_px = g * (0.5*(myArray.qc[i][k] + myArray.qc[i][k-1]) - 0.5*(myArray.qc[i-1][k] + myArray.qc[i-1][k-1])) * rdx;
-				double gpqr_px = g * (0.5*(myArray.qr[i][k] + myArray.qr[i][k-1]) - 0.5*(myArray.qr[i-1][k] + myArray.qr[i-1][k-1])) * rdx;
+				double g_pqv_px = gravity * (0.5*(myArray.qv[i][k] + myArray.qv[i][k-1]) - 0.5*(myArray.qv[i-1][k] + myArray.qv[i-1][k-1])) * rdx;
+				double gpqc_px = gravity * (0.5*(myArray.qc[i][k] + myArray.qc[i][k-1]) - 0.5*(myArray.qc[i-1][k] + myArray.qc[i-1][k-1])) * rdx;
+				double gpqr_px = gravity * (0.5*(myArray.qr[i][k] + myArray.qr[i][k-1]) - 0.5*(myArray.qr[i-1][k] + myArray.qr[i-1][k-1])) * rdx;
 				myArray.zetap[i][k] = myArray.zetam[i][k] + d2t * (g_tb_pth_px - puzeta_px - pwzeta_pz + 0.61 * g_pqv_px - gpqc_px - gpqr_px);
 			#else
 				myArray.zetap[i][k] = myArray.zetam[i][k] + d2t * (g_tb_pth_px - puzeta_px - pwzeta_pz);
@@ -56,7 +56,7 @@ void Iteration::pzeta_pt(Array& myArray) {
 	return;
 }
 
-void Iteration::pth_pt(Array& myArray) {
+void Iteration::pth_pt(vvmArray& myArray) {
 	double puth_px = 0., prhowth_pz_rho = 0., wptb_pz = 0.;
 	for (int i = 1; i <= nx-2; i++) {
 		for (int k = 1; k <= nz-2; k++) {
@@ -98,7 +98,7 @@ void Iteration::pth_pt(Array& myArray) {
 	return;
 }
 
-void Iteration::cal_w(Array& myArray) {
+void Iteration::cal_w(vvmArray& myArray) {
 	#if defined(ADVECTIONU)
 		for (int i = 0; i <= nx-1; i++) { for (int k = 0; k <= nz-1; k++) { myArray.u[i][k] = 10.;}}
 	#elif defined(ADVECTIONW)
@@ -173,7 +173,7 @@ void Iteration::cal_w(Array& myArray) {
 	return;
 }
 
-void Iteration::cal_u(Array& myArray) {
+void Iteration::cal_u(vvmArray& myArray) {
 	#if defined(ADVECTIONU)
 		for (int i = 0; i <= nx-1; i++) { for (int k = 0; k <= nz-1; k++) { myArray.w[i][k] = 0.;}}
 	#elif defined(ADVECTIONW)
@@ -247,7 +247,7 @@ void Iteration::cal_u(Array& myArray) {
 	return;
 }
 
-void Iteration::pqv_pt(Array & myArray) {
+void Iteration::pqv_pt(vvmArray & myArray) {
 	double puqv_px = 0., prhowqv_pz_rho = 0., wpqvb_pz = 0.;
 	for (int i = 1; i <= nx-2; i++) {
 		for (int k = 1; k <= nz-2; k++) {
@@ -297,7 +297,7 @@ void Iteration::pqv_pt(Array & myArray) {
 	return;
 }
 
-void Iteration::pqc_pt(Array & myArray) {
+void Iteration::pqc_pt(vvmArray & myArray) {
 	double puqc_px = 0., prhowqc_pz_rho = 0.;
 	for (int i = 1; i <= nx-2; i++) {
 		for (int k = 1; k <= nz-2; k++) {
@@ -331,7 +331,7 @@ void Iteration::pqc_pt(Array & myArray) {
 	return;
 }
 
-void Iteration::pqr_pt(Array & myArray) {
+void Iteration::pqr_pt(vvmArray & myArray) {
 	double puqr_px = 0., prhowVTqr_pz_rho = 0.;
 	for (int i = 1; i <= nx-2; i++) {
 		for (int k = 1; k <= nz-2; k++) {
@@ -367,7 +367,7 @@ void Iteration::pqr_pt(Array & myArray) {
 	return;
 }
 
-void Iteration::condensation(Array & myArray, int i, int k) {
+void Iteration::condensation(vvmArray & myArray, int i, int k) {
 	double pc = 380. / (pow(myArray.pib[k], C_p / Rd) * P0); 	// coefficient
 	double pth = myArray.thp[i][k] + myArray.tb[k];
 	double qvs = pc * exp(17.27 * (myArray.pib[k] * pth - 273.) / (myArray.pib[k] * pth - 36.));
@@ -384,7 +384,7 @@ void Iteration::condensation(Array & myArray, int i, int k) {
 }
 
 // autoconversion of qc to qr
-void Iteration::autoconversion(Array & myArray, int i, int k) {
+void Iteration::autoconversion(vvmArray & myArray, int i, int k) {
 	double autort = 0.001, autotr = 0.001; // autocon rate [1/sec], autocon threshold [kg/kg]
 	double qcplus = std::max(0., myArray.qcp[i][k]);
 	double ar = autort * (qcplus - autotr);
@@ -396,7 +396,7 @@ void Iteration::autoconversion(Array & myArray, int i, int k) {
 }
 
 // accretion of qc by qr
-void Iteration::accretion(Array & myArray, int i, int k) {
+void Iteration::accretion(vvmArray & myArray, int i, int k) {
 	double accrrt = 2.2; // accretion rate [1/sec]
 	double qcplus = std::max(0., myArray.qcp[i][k]);
 	double qrplus = std::max(0., myArray.qrp[i][k]);
@@ -410,7 +410,7 @@ void Iteration::accretion(Array & myArray, int i, int k) {
 }
 
 // evaporation of rain water
-void Iteration::evaporation(Array & myArray, int i, int k) {
+void Iteration::evaporation(vvmArray & myArray, int i, int k) {
 	double qrplus = std::max(0., myArray.qrp[i][k]);
 	double qvplus = std::max(0., myArray.qvp[i][k] + myArray.qvb[k]);
 
@@ -431,7 +431,7 @@ void Iteration::evaporation(Array & myArray, int i, int k) {
 	return;
 }
 
-void Iteration::heatflux(Array & myArray, int i, int k, int ishflux) {
+void Iteration::heatflux(vvmArray & myArray, int i, int k, int ishflux) {
 	if (ishflux == 1 && k == 1) {
 		double cdh = 7e-3;
 		double tground = 303.;
@@ -444,7 +444,7 @@ void Iteration::heatflux(Array & myArray, int i, int k, int ishflux) {
 	}
 }
 
-void Iteration::LeapFrog(Array & myArray) {
+void Iteration::LeapFrog(vvmArray & myArray) {
 	int n = 0;
 	double timenow = 0.;
 	double temp = TIMEEND / dt;
@@ -460,6 +460,7 @@ void Iteration::LeapFrog(Array & myArray) {
 			Output::output_qv(n, myArray);
 			Output::output_qc(n, myArray);
 			Output::output_qr(n, myArray);
+			Plot::plot_zeta(myArray);
 		}
 		n++;
 		timenow = n * dt;

@@ -5,8 +5,8 @@
 
 class Init {
 	public:
-			static void Init1d(Array &);
-			static void Init2d(Array &);
+			static void Init1d(vvmArray &);
+			static void Init2d(vvmArray &);
 			
 	private:
 			static double GetTB(int);

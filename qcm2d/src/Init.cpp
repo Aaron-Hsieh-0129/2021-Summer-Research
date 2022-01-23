@@ -1,6 +1,6 @@
 #include "Init.h"
 
-void Init::Init1d(Array & myArray) {
+void Init::Init1d(vvmArray & myArray) {
 	// init tb
 	myArray.tb[1] = 300.;
 	for (int k = 2; k <= nz-2; k++) {
@@ -30,10 +30,10 @@ void Init::Init1d(Array & myArray) {
 	// init pib
 	double pisfc = pow((PSURF / P0), Rd / C_p);
 	for (int k = 1; k <= nz-2; k++) {
-		if (k == 1) myArray.pib[k] = pisfc - g * 0.5 * dz / (C_p * myArray.tvb[k]);
+		if (k == 1) myArray.pib[k] = pisfc - gravity * 0.5 * dz / (C_p * myArray.tvb[k]);
 		else {
 			double tvbavg = 0.5*(myArray.tvb[k] + myArray.tvb[k-1]);
-			myArray.pib[k] = myArray.pib[k-1] - g * dz / (C_p * tvbavg);
+			myArray.pib[k] = myArray.pib[k-1] - gravity * dz / (C_p * tvbavg);
 		}
 	}
 	myArray.pib[0] = myArray.pib[1];
@@ -81,7 +81,7 @@ void Init::Init1d(Array & myArray) {
 	return;
 }
 
-void Init::Init2d(Array & myArray) {
+void Init::Init2d(vvmArray & myArray) {
 	// init th
 	for (int i = 1; i <= nx-2; i++) {
 		for (int k = 1; k <= nz-2; k++) {

@@ -2,7 +2,7 @@
 #include <cmath>
 #include "Const.hpp"
 
-class Array {
+class vvmArray {
 	public:
 			// constructor
 			Array();
