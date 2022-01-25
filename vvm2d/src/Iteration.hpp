@@ -1,6 +1,6 @@
 #include "Outputfile.hpp"
-#include "Plot.hpp"
 #include <Eigen/Sparse>
+// #include <matplotlib-cpp-master/matplotlibcpp.h>
 
 typedef Eigen::Triplet<double> T;
 class Iteration {

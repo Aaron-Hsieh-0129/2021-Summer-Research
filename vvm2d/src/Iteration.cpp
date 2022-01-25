@@ -460,7 +460,7 @@ void Iteration::LeapFrog(vvmArray & myArray) {
 			Output::output_qv(n, myArray);
 			Output::output_qc(n, myArray);
 			Output::output_qr(n, myArray);
-			Plot::plot_zeta(myArray);
+			Plot::plot_zeta(n, myArray);
 		}
 		n++;
 		timenow = n * dt;

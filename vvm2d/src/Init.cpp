@@ -134,7 +134,7 @@ double Init::GetTB(int k) {
 	double z_top = 12000., T_top = 213., tb_top = 343.;
 	double z_t = dz * (k - 0.5);
 	if (z_t <= z_top) return 300. + 43. * pow(z_t / z_top, 1.25);
-	else return tb_top * exp(g * (z_t - z_top) / (C_p * T_top));
+	else return tb_top * exp(gravity * (z_t - z_top) / (C_p * T_top));
 }
 
 double Init::GetTHRAD(int i, int k) {

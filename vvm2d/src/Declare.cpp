@@ -1,6 +1,6 @@
 #include "Declare.hpp"
 
-vvmArray::Array() {
+vvmArray::vvmArray() {
 	for (int k = 0; k <= nz-1; k++) {
 		for (int i = 0; i <= nx-1; i++){
 			zetap[i][k] = zeta[i][k] = zetam[i][k] = 0.;

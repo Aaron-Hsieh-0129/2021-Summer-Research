@@ -1,7 +1,7 @@
-#include <iostream>
 #include "Iteration.hpp"
+#include <matplotlib-cpp-master/matplotlibcpp.h>
 
-Array myArray;
+vvmArray myArray;
 
 int main(void) {
 	Init::Init1d(myArray);

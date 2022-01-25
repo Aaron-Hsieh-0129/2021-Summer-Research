@@ -5,7 +5,7 @@
 class vvmArray {
 	public:
 			// constructor
-			Array();
+			vvmArray();
 
 			double tb[nz], tb_zeta[nz], rhou[nz], rhow[nz], pib[nz], qvb[nz], qvsb[nz], tvb[nz], pb[nz];
 			double zetap[nx][nz], zeta[nx][nz], zetam[nx][nz];
