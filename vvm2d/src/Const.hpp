@@ -1,4 +1,4 @@
-#define WORKDIRECTORY "/Users/wei/2021-Summer-Research/vvm2d/src"
+#define WORKDIRECTORY "/Users/wei/2021-Summer-Research/vvm2d/src/"
 #define gravity (9.80665)
 #define C_p (1003.5)
 #define Rd (287.)
@@ -25,6 +25,9 @@
 #define TIMETS (0.01)
 #define Lv (2500000.)
 
+
+#define OUTPUTFILEMODE
+#define OUTPUTGRAPHMODE
 
 // #define DRY
 // #define RHO1

@@ -453,14 +453,18 @@ void Iteration::LeapFrog(vvmArray & myArray) {
 		std::cout << n << std::endl;
 		// output
 		if (n % OUTPUTSTEP == 0) {
-			Output::output_zeta(n, myArray);
-			Output::output_th(n, myArray);
-			Output::output_u(n, myArray);
-			Output::output_w(n, myArray);
-			Output::output_qv(n, myArray);
-			Output::output_qc(n, myArray);
-			Output::output_qr(n, myArray);
-			Plot::plot_zeta(n, myArray);
+			#if defined(OUTPUTFILEMODE)
+				Output::output_zeta(n, myArray);
+				Output::output_th(n, myArray);
+				Output::output_u(n, myArray);
+				Output::output_w(n, myArray);
+				Output::output_qv(n, myArray);
+				Output::output_qc(n, myArray);
+				Output::output_qr(n, myArray);
+			#endif
+			#if defined(OUTPUTGRAPHMODE)
+				Plot::plot_zeta(n, myArray);
+			#endif
 		}
 		n++;
 		timenow = n * dt;

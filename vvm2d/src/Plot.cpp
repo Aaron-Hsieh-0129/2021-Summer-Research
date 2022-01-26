@@ -22,16 +22,19 @@ void Plot::plot_zeta(int n, vvmArray & myArray) {
     // initPython();
 
     Py_Initialize();
+
+    if (!Py_IsInitialized()) {
+        return;
+    }
+
     initNumpy();
     PyRun_SimpleString("import sys");
-    // std::string tmp1 = "\"sys.path.append('";
-    // std::string tmp2 =  WORKDIRECTORY;
-    // std::string tmp3 = "')\"";
-    // std::string all = tmp1.append(tmp2);
-    // all = all.append(tmp3);
-    // std::cout << all << std::endl;
-
-    PyRun_SimpleString("sys.path.append('/Users/wei/2021-Summer-Research/vvm2d/src')");
+    std::string tmp1 = "sys.path.append('";
+    std::string tmp2 =  WORKDIRECTORY;
+    std::string tmp3 = "')";
+    std::string all = tmp1.append(tmp2);
+    all = all.append(tmp3);
+    PyRun_SimpleString(all.c_str());            // append the python script directory
 
     PyObject *pDict = nullptr;
     PyObject *pModule = nullptr;
