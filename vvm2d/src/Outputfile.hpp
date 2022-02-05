@@ -1,10 +1,10 @@
 #include <fstream>
 #include <iomanip>
 #include "Init.hpp"
-#include "/Users/wei/miniconda3/include/python3.8/Python.h"
+#include "/Users/Aaron/miniconda3/include/python3.8/Python.h"
 #ifndef WITHOUT_NUMPY
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
-#include "/Users/wei/miniconda3/lib/python3.8/site-packages/numpy/core/include/numpy/arrayobject.h"
+#include "/Users/Aaron/miniconda3/lib/python3.8/site-packages/numpy/core/include/numpy/arrayobject.h"
 #endif
 
 class Output {
