@@ -3,7 +3,9 @@ Two-dimensional VVM and QCM
 
 ## Warm ceal with unstable environment and without initial wind velocity
 ![image](https://github.com/Aaron-Hsieh-0129/2021-Summer-Research/blob/main/vvm2d/result/EX2.gif) 
-Shading: potential temperature perturbation (a physical variable likes temperature), contour: qc (cloud water), blue dots: qr (rain water > thershold)
+Shading: potential temperature perturbation (a physical variable which is similar to temperature)
+
+contour: qc (cloud water), blue dots: qr (rain water > thershold)
 
 ## Warm ceal with unstable environment and with initial wind shear
 ![image](https://github.com/Aaron-Hsieh-0129/2021-Summer-Research/blob/main/vvm2d/result/EX3.gif) 
