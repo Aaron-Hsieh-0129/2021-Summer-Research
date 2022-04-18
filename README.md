@@ -1,13 +1,13 @@
 # 2021-Summer-Research——Vector Vorticity Model (VVM) and Quasi Compressible Model (QCM)
 Two-dimensional VVM and QCM
 
-## Warm ceal with unstable environment and without initial wind velocity
+## Warm cell with unstable environment and without initial wind velocity
 ![image](https://github.com/Aaron-Hsieh-0129/2021-Summer-Research/blob/main/vvm2d/result/EX2.gif) 
 Shading: potential temperature perturbation (a physical variable which is similar to temperature)
 
 contour: qc (cloud water), blue dots: qr (rain water > thershold)
 
-## Warm ceal with unstable environment and with initial wind shear
+## Warm cell with unstable environment and with initial wind shear
 ![image](https://github.com/Aaron-Hsieh-0129/2021-Summer-Research/blob/main/vvm2d/result/EX3.gif) 
 Shading: potential temperature perturbation (a physical variable which is similar to temperature)
 
